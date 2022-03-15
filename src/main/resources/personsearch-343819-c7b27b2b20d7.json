@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "personsearch-343819",
+  "private_key_id": "c7b27b2b20d7aeca6f3915baa1f60ae37f9b7099",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEugIBADANBgkqhkiG9w0BAQEFAASCBKQwggSgAgEAAoIBAQCOM/wSLiriXPe6\nkhzIE69rosTJTNz4XD66WuCyj7X1rgzqvMnH3UhsoOsOry4LhhWg+iB7lNLvOXYf\nhNluRCSsmqFWIs2a3llIGFsQxs6mqCZ6nqkRU24joTbAW2ArGdgJqwfENVuzphko\nKlT9IHk99a5L1cCusgcT+yyqhM0zz9u884DgvxsrQ3sEIQPuMSsykm+Ghe8xqXqH\nT/m7h1Oh4zDtxwce2zgFsP15j/B6g2Ar2NBUNN/U3tCYnaT8xIHPgCEJ3caCtWlE\nZLEX5yzhLlFundV+/s1zMz/5x97X3OGYb/k6gIhZbg0vyJzBKTERzlX88buPgMKU\nD1ii0UPVAgMBAAECgf8dTRjjph+wBPgGuZS0pVnAFAn4cJ4Xjupd+9vQ70vPE84V\nkFEDndUOjRniLLaQKVDLmr6WuFO+d1ifpgAneGMWLcaQuRskjixXbq1VB6INNRi4\nq3iq2UYYkV92w11NhEW/uD4hb901Z0RHwnFAtzBEVBtWBPVvCb/rnhXWDQc7ZYp+\nmRoUKvmOon+/cTe0lBEhfedMLDpDuAOnt/N8iPVsTjqE6VbLVRvnOzjdIo9ZsiLW\njENonjeIlZOmsidiUcRXP4AEyIyRecU2paQb3uHvLY+6XsQMTnaT2eFejQyAt4EU\nBlGrfIqkk1r/dWTUNpWsckbquDJYCoIwoFUuvCECgYEAwWLKipFyDsU/ffKn7fFn\n7RgCxp/jQ7zfcb4dfMxQevkhBGToh1A9X1mFVvfdYXAwD+URXJz7YD/C56yRYvI6\nOgJ5vAj84+5lWHje4A0l6Cootl50ghSmEIoWrtA1OvB7ugypCNQ16Ckg/Q4liwEv\nNw1+XhBqRkIIdZObMOL6T3UCgYEAvD7LEpHvXc8JyEETVsmbB7RciSo1WniwanWQ\nm3wFXlKMDdcNSqNR4Twce5SXBgMEhEhQDzmezbWeaGLWm29fFUd+ETTi+5CNgyNH\nbr0MiGQ5zAzafkbPlW94+txBv4xO6+CQ1zCjYa8gLhtCiHfftDJEE0eKjAwDVF+l\nygq79uECgYBCnHLDlCHDcLHUAjdRwGtZwYGDRSOU+4PDvAaQLBg0o4d56gAmS784\nDq/dKvd4TppffzmhuvjjSFMsVcamXGUuAhhIapghMsZ52Ph8GEtMUuk/F/3tqIsi\n+02g3VrYeGlFxoKa5e3DkBcq0yqfXMMUpXM3l1Pj627agQNdrXEm2QKBgE6X4O0V\n5NxDro/fK5XWglWLJf9WkgP905n/D6r68rrYuASnPrNk0LC7CiFGfm9SHzajgll4\n8yZrp4FpkrQ+oXIe8TF55TKmvY580jwXzf276q2YyDhklBKOAfKqtwCkMeclUROn\nCO+l0Eevte2ILuvq+KUb/2pNMa6uaGecZ7HBAoGAc+nOsCF9zbB+YvxeG7fcOb4B\ng6bRC+MA+YApIt1Es4dNmXIZNaHPXTo3XEqBJBdH165FcATKa2vVqzfPAfcfeiD4\nhe8mqy7SzCQpzdity8YXlQ/ju/RAWLiy8z3k1amgpNlV+mA6RV4vXCSRz1DuFac7\nQGrXnICZF0vWyxb0qj8=\n-----END PRIVATE KEY-----\n",
+  "client_email": "personsearch@personsearch-343819.iam.gserviceaccount.com",
+  "client_id": "117357809840631682818",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/personsearch%40personsearch-343819.iam.gserviceaccount.com"
+}
