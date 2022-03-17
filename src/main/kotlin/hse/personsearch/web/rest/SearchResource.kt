@@ -2,7 +2,7 @@ package hse.personsearch.web.rest
 
 import hse.personsearch.domain.Constants.AUTO_EXPIRE_QUEUE_MILLIS
 import hse.personsearch.domain.Constants.REQUEST_QUEUE_NAME
-import hse.personsearch.domain.Error
+import hse.personsearch.domain.SearchError
 import hse.personsearch.service.ImageUploadService
 import hse.personsearch.service.MailService
 import hse.personsearch.service.RabbitQueueService
@@ -83,7 +83,7 @@ class SearchResource {
         val response = rabbitQueueService.receive<MQResponseDto>(uuid.toString(), ParameterizedTypeReference.forType(MQResponseDto::class.java))
 
         return if (!response.errorCode.isNullOrEmpty()) {
-            val error = Error.valueOf(response.errorCode!!)
+            val error = SearchError(response.errorCode!!)
             ResponseDto().apply { this.errorCode = error }
         } else {
             val reportId = response.reportId!!
@@ -123,6 +123,6 @@ class SearchResource {
 //
     @PostMapping("/test-send-mail")
     fun test1(@NotNull @RequestParam email: String, @NotNull @RequestParam reportId: Long) {
-        mailService.sendMailNotice(email!!, reportId, reportService.findReportImageUrl(reportId))
+        mailService.sendMailNotice(email, reportId, reportService.findReportImageUrl(reportId))
     }
 }
