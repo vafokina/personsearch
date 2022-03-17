@@ -2,6 +2,7 @@ package hse.personsearch.service.impl;
 
 import hse.personsearch.service.RabbitQueueService;
 import java.util.Map;
+import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Queue;
@@ -12,6 +13,7 @@ import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistry;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import static hse.personsearch.domain.Constants.REPORT_QUEUE_NAME;
 import static hse.personsearch.domain.Constants.REQUEST_QUEUE_NAME;
 
 @Service
@@ -26,9 +28,13 @@ public class RabbitQueueServiceImpl implements RabbitQueueService {
         this.rabbitAdmin = rabbitAdmin;
         this.rabbitListenerEndpointRegistry = rabbitListenerEndpointRegistry;
 
-        QueueInformation queueInfo = rabbitAdmin.getQueueInfo(REQUEST_QUEUE_NAME);
-        if (queueInfo == null) {
+        QueueInformation requestQueueInfo = rabbitAdmin.getQueueInfo(REQUEST_QUEUE_NAME);
+        if (requestQueueInfo == null) {
             createQueue(REQUEST_QUEUE_NAME);
+        }
+        QueueInformation reportQueueInfo = rabbitAdmin.getQueueInfo(REPORT_QUEUE_NAME);
+        if (reportQueueInfo == null) {
+            createQueue(REPORT_QUEUE_NAME);
         }
     }
 
@@ -84,4 +90,12 @@ public class RabbitQueueServiceImpl implements RabbitQueueService {
         log.debug("Send to routingKey " + routingKey + " message with " + object);
     }
 
+    @Override
+    public int getMessageCount() {
+        int a = Integer.parseInt(Objects.requireNonNull(rabbitAdmin.getQueueProperties(REQUEST_QUEUE_NAME))
+                .get(RabbitAdmin.QUEUE_MESSAGE_COUNT).toString());
+        int b = Integer.parseInt(Objects.requireNonNull(rabbitAdmin.getQueueProperties(REPORT_QUEUE_NAME))
+                .get(RabbitAdmin.QUEUE_MESSAGE_COUNT).toString());
+        return a + b;
+    }
 }

@@ -12,4 +12,5 @@ interface ReportService {
 
     fun getReportLinks(id: Long, sorting: ReportSorting, pageable: Pageable): Page<ReportLink>
 
+    fun findReportImageUrl(id: Long): String?
 }

@@ -27,4 +27,8 @@ class ReportServiceImpl(
         }
     }
 
+    override fun findReportImageUrl(id: Long): String? {
+        return reportRepository.getById(id).imageUrl
+    }
+
 }

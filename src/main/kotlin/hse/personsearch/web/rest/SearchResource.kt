@@ -2,11 +2,16 @@ package hse.personsearch.web.rest
 
 import hse.personsearch.domain.Constants.AUTO_EXPIRE_QUEUE_MILLIS
 import hse.personsearch.domain.Constants.REQUEST_QUEUE_NAME
+import hse.personsearch.domain.Error
 import hse.personsearch.service.ImageUploadService
+import hse.personsearch.service.MailService
 import hse.personsearch.service.RabbitQueueService
+import hse.personsearch.service.ReportService
 import hse.personsearch.service.dto.EmailDto
 import hse.personsearch.service.dto.MQRequestDto
 import hse.personsearch.service.dto.MQResponseDto
+import hse.personsearch.service.dto.ResponseDto
+import hse.personsearch.service.mapper.MailNoticeMapper
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
@@ -20,6 +25,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 
@@ -33,6 +39,15 @@ class SearchResource {
 
     @Autowired
     private lateinit var imageUploadService: ImageUploadService
+
+    @Autowired
+    private lateinit var reportService: ReportService
+
+    @Autowired
+    private lateinit var mailService: MailService
+
+    @Autowired
+    private lateinit var mailNoticeMapper: MailNoticeMapper
 
     //@Async
     @ApiOperation(
@@ -64,18 +79,23 @@ class SearchResource {
     fun getSearchResult(
         @ApiParam("the request uuid", example = "d54ffc8f-a3cd-4078-a68c-6f5df63e167a", required = true)
         @NotNull @PathVariable uuid: UUID
-    ): Long {
+    ): ResponseDto {
         val response = rabbitQueueService.receive<MQResponseDto>(uuid.toString(), ParameterizedTypeReference.forType(MQResponseDto::class.java))
 
-        if (!response.errorCode.isNullOrEmpty()) {
-            // TODO implement!!!!!!!
-            // как лучше кидать ошибку или передавать в ДТО
+        return if (!response.errorCode.isNullOrEmpty()) {
+            val error = Error.valueOf(response.errorCode!!)
+            ResponseDto().apply { this.errorCode = error }
+        } else {
+            val reportId = response.reportId!!
+
+            // notify by email
+            val mailNotice = mailService.findMailNotice(uuid)
+            if (mailNotice != null) {
+                mailService.sendMailNotice(mailNotice.email!!, reportId, reportService.findReportImageUrl(reportId))
+            }
+
+            ResponseDto().apply { this.reportId = reportId }
         }
-
-        //email
-        // TODO implement!!!!!!!
-
-        return response.reportId!!
     }
 
     @ApiOperation(
@@ -84,10 +104,8 @@ class SearchResource {
     )
     @GetMapping("/request-count")
     fun getRequestCount(): Int {
-        // TODO implement!!!!!!!
-
-        //log.debug("REST request to check if the current user is authenticated")
-        return 5
+        // returns a count of all messages in both queues, not a count of messages before a specific request
+        return rabbitQueueService.messageCount
     }
 
     @ApiOperation(
@@ -95,11 +113,16 @@ class SearchResource {
     )
     @PostMapping("/email")
     fun notifyByEmail(@Valid @RequestBody emailDto: EmailDto) {
-        // TODO implement!!!!!!!
+        mailService.saveMailNotice(mailNoticeMapper.toEntity(emailDto))
     }
 
-    @PostMapping("/test-send/{uuid}")
-    fun test1(@NotNull @PathVariable uuid: UUID, response: MQResponseDto) {
-        rabbitQueueService.send(uuid.toString(), response)
+//    @PostMapping("/test-send/{uuid}")
+//    fun test1(@NotNull @PathVariable uuid: UUID, response: MQResponseDto) {
+//        rabbitQueueService.send(uuid.toString(), response)
+//    }
+//
+    @PostMapping("/test-send-mail")
+    fun test1(@NotNull @RequestParam email: String, @NotNull @RequestParam reportId: Long) {
+        mailService.sendMailNotice(email!!, reportId, reportService.findReportImageUrl(reportId))
     }
 }

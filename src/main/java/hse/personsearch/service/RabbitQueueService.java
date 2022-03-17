@@ -15,4 +15,6 @@ public interface RabbitQueueService {
 
     void send(String routingKey, Object object);
 
+    public int getMessageCount();
+
 }
