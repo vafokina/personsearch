@@ -6,6 +6,7 @@ import hse.personsearch.repository.MailNoticeRepository
 import hse.personsearch.service.MailService
 import java.util.Locale
 import java.util.UUID
+import org.slf4j.LoggerFactory
 import org.springframework.core.env.Environment
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
@@ -22,6 +23,7 @@ class MailServiceImpl(
     private val applicationProperties: ApplicationProperties,
     private val environment: Environment
 ) : MailService {
+    private val log = LoggerFactory.getLogger(MailService::class.java)
 
     override fun findMailNotice(uuid: UUID): MailNotice? {
         return mailNoticeRepository.findByRequestUuid(uuid)
@@ -45,13 +47,14 @@ class MailServiceImpl(
         helper.setSubject("Отчет №$reportId готов")
 
         val params = mapOf(
-            Pair("url", "${applicationProperties.address}/api/report/$reportId"),
+            Pair("url", "${applicationProperties.address}/report/$reportId"),
             Pair("imageUrl", reportImageUrl),
         )
         val context = Context(Locale("RU"), params)
         helper.setText(templateEngine.process("mailNotice.html", context), true)
 
         javaMailSender.send(msg)
+        log.info("Send message to $email with reportId=$reportId")
     }
 
 }

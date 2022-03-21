@@ -9,4 +9,8 @@ class MQResponseDto {
     var errorCode: String? = null
 
     var reportId: Long? = null
+
+    override fun toString(): String {
+        return "{ uuid: $uuid, errorCode: $errorCode, reportId: $reportId }"
+    }
 }

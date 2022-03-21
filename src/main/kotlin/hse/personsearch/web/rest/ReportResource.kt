@@ -11,10 +11,9 @@ import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
 import java.io.File
-import java.text.DateFormat
-import java.text.SimpleDateFormat
 import javax.servlet.http.HttpServletResponse
 import javax.validation.constraints.NotNull
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.GetMapping
@@ -28,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/report")
 class ReportResource {
+    private val log = LoggerFactory.getLogger(ReportResource::class.java)
 
     @Autowired
     private lateinit var reportService: ReportService
@@ -53,6 +53,7 @@ class ReportResource {
         @RequestParam(name = "sorting", defaultValue = DEFAULT_SORTING) sorting: ReportSorting,
         pageable: Pageable
     ): ReportDto {
+        log.debug("GET /api/report/$id Get search results by the report id")
         val reportLinks = reportService.getReportLinks(id, sorting, pageable).map(reportLinkMapper::toDto)
         return reportMapper.toDto(reportService.getReport(id), reportLinks)
     }
@@ -69,6 +70,7 @@ class ReportResource {
         @RequestParam(name = "sorting", defaultValue = DEFAULT_SORTING) sorting: ReportSorting,
         response: HttpServletResponse
     ) {
+        log.debug("GET /api/report/$id/download Download search results as Excel file by the report id")
         val report = reportService.getReport(id)
         val reportLinks = reportService.getReportLinks(id, sorting, Pageable.unpaged()).toList()
 

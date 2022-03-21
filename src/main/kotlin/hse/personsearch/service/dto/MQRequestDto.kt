@@ -8,4 +8,7 @@ class MQRequestDto {
 
     var imageUrl: String? = null
 
+    override fun toString(): String {
+        return "{ uuid: $uuid, imageUrl: $imageUrl }"
+    }
 }
